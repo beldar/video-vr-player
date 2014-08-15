@@ -1,0 +1,13 @@
+{
+  "name": "video-oculus",
+  "private": true,
+  "dependencies": {
+    "jquery": "~1.11.0",
+    "threejs": "*",
+    "threejs-stats": "*",
+    "threejs-controls": "*",
+    "threex.windowresize": "*",
+    "threex.videotexture": "*"
+  },
+  "devDependencies": {}
+}

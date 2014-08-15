@@ -1,0 +1,7 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Users/martip/Sites/video-oculus/app/bower_components/threex.windowresize/package.require.js",
+        "/Users/martip/Sites/video-oculus/app/bower_components/threex.windowresize/threex.windowresize.js",
+        "/Users/martip/Sites/video-oculus/app/bower_components/threex.windowresize/examples/vendor/three.js/build/three.min.js"
+    ]
+}
