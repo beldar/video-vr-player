@@ -1,6 +1,6 @@
 #Video-Oculus
 
-Uses ThreeJS and some plugins (WebGL) to transform a video to be viewable on the Oculus Rift
+Uses ThreeJS and some plugins (WebGL) to transform a video to be viewable on Android Chrome with Google Cardboard
 
 ## Install
 

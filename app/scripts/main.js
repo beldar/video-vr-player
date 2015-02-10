@@ -1,5 +1,5 @@
 if ( ! Detector.webgl ) {
-
+    console.log('No WebGL');
     Detector.addGetWebGLMessage();
     document.getElementById( 'container' ).innerHTML = "";
 
@@ -20,8 +20,8 @@ var effect = new THREE.OculusRiftEffect( renderer, {
     //1920x1080
     worldFactor: 10,
     HMD : {
-        hResolution: 1920,
-        vResolution: 1080,
+        hResolution: window.innerWidth,
+        vResolution: window.innerHeight,
         hScreenSize: 0.14976,
         vScreenSize: 0.0936,
         interpupillaryDistance: 0.0805,
@@ -31,37 +31,52 @@ var effect = new THREE.OculusRiftEffect( renderer, {
         chromaAbParameter: [ 0.996, -0.004, 1.014, 0.0]
     }
 });
-effect.setSize( window.innerWidth, window.innerHeight );
+
 
 //////////////////////////////////////////////////////////////////////////////////
 //		add an object and make it move					//
 //////////////////////////////////////////////////////////////////////////////////
 
 // create the videoTexture
-var videoTexture= new THREEx.VideoTexture('video/earth.mp4')
-var video	= videoTexture.video
-updateFcts.push(function(delta, now){
-    videoTexture.update(delta, now)
-})
+// create the video element
+video = document.getElementById( 'video' );
+video.src = "video/earth.mp4";
+video.setAttribute('crossorigin', 'anonymous');
+video.load(); // must call after setting/changing source
 
-// use the texture in a THREE.Mesh
-var geometry	= new THREE.PlaneGeometry( 10, 10 );
-var material	= new THREE.MeshBasicMaterial({
-    map	: videoTexture.texture
+//On tap, go fullscreen and start playing the video
+document.addEventListener('touchstart', function(){
+    document.getElementById('start').style.display = 'none';
+    var
+    el = document.documentElement
+    , rfs =
+        el.requestFullScreen
+    || el.webkitRequestFullScreen
+    || el.mozRequestFullScreen
+    ;
+    rfs.call(el);
+    effect.setSize( window.innerWidth, window.innerHeight );
+    video.play();
+    requestAnimationFrame(animate);
 });
+
+var videoTexture = new THREE.Texture( video );
+var geometry	= new THREE.PlaneGeometry( 10, 10 );
+var material = new THREE.MeshBasicMaterial( { map: videoTexture, overdraw: true, side:THREE.DoubleSide } );
 var mesh	= new THREE.Mesh( geometry, material );
 scene.add( mesh );
+
 
 
 //////////////////////////////////////////////////////////////////////////////////
 //		Camera Controls							//
 //////////////////////////////////////////////////////////////////////////////////
-var mouse	= {x : 0, y : 0}
+/*var mouse	= {x : 0, y : 0}
 document.addEventListener('mousemove', function(event){
     mouse.x	= (event.clientX / window.innerWidth ) - 0.5
     mouse.y	= (event.clientY / window.innerHeight) - 0.5
 }, false)
-/*updateFcts.push(function(delta, now){
+updateFcts.push(function(delta, now){
     camera.position.x += (mouse.x*5 - camera.position.x) * (delta*3)
     camera.position.y += (mouse.y*5 - camera.position.y) * (delta*3)
     camera.lookAt( scene.position )
@@ -79,16 +94,19 @@ updateFcts.push(function(){
 //////////////////////////////////////////////////////////////////////////////////
 //		loop runner							//
 //////////////////////////////////////////////////////////////////////////////////
-var lastTimeMsec= null
-requestAnimationFrame(function animate(nowMsec){
+var lastTimeMsec = null;
+function animate(nowMsec){
     // keep looping
     requestAnimationFrame( animate );
     // measure time
-    lastTimeMsec	= lastTimeMsec || nowMsec-1000/60
-    var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec)
-    lastTimeMsec	= nowMsec
+    lastTimeMsec	= lastTimeMsec || nowMsec-1000/60;
+    var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec);
+    lastTimeMsec	= nowMsec;
+
+    if ( videoTexture ) 
+        videoTexture.needsUpdate = true;
     // call each update function
     updateFcts.forEach(function(updateFn){
         updateFn(deltaMsec/1000, nowMsec/1000)
-    })
-})
+    });
+}
