@@ -1,4 +1,4 @@
-#Video-Oculus
+#Video VR Player
 
 Uses ThreeJS and some plugins (WebGL) to transform a video to be viewable on Android Chrome with Google Cardboard
 
