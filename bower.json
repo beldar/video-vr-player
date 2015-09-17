@@ -5,7 +5,7 @@
     "jquery": "~1.11.0",
     "threejs": "*",
     "threejs-stats": "*",
-    "threejs-controls": "*",
+    "threejs-control": "https://github.com/noseglid/three.js-controls.git",
     "threex.windowresize": "*",
     "threex.videotexture": "*"
   },

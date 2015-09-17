@@ -45,7 +45,7 @@ video.setAttribute('crossorigin', 'anonymous');
 video.load(); // must call after setting/changing source
 
 //On tap, go fullscreen and start playing the video
-document.addEventListener('touchstart', function(){
+var start = function(){
     document.getElementById('start').style.display = 'none';
     var
     el = document.documentElement
@@ -58,7 +58,9 @@ document.addEventListener('touchstart', function(){
     effect.setSize( window.innerWidth, window.innerHeight );
     video.play();
     requestAnimationFrame(animate);
-});
+};
+document.addEventListener('touchstart', start);
+document.addEventListener('click', start);
 
 var videoTexture = new THREE.Texture( video );
 var geometry	= new THREE.PlaneGeometry( 10, 10 );
@@ -103,7 +105,7 @@ function animate(nowMsec){
     var deltaMsec	= Math.min(200, nowMsec - lastTimeMsec);
     lastTimeMsec	= nowMsec;
 
-    if ( videoTexture ) 
+    if ( videoTexture )
         videoTexture.needsUpdate = true;
     // call each update function
     updateFcts.forEach(function(updateFn){
